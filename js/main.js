@@ -1,44 +1,22 @@
-// let $number = document.querySelector('#number');
-// let $decrease = document.querySelector('#decrease');
-// let $reset = document.querySelector('#reset');
-// let $increase = document.querySelector('#increase');
+function removeTransition(e) {
+    if (e.propertyName !== 'transform') {
+        return;
+    }
+    e.target.classList.remove('playing');
+}
 
-// let text = $number.textContent;
-// let number = Number(text);
+function playSound(e) {
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+    if(!audio) {
+        return;
+    }
 
-// $number.style.color = 'white';
+    key.classList.add('playing');
+    audio.currentTime = 0;
+    audio.play();
+}
 
-// $decrease.addEventListener('click', decreaseFunction);
-// $reset.addEventListener('click', resetFunction);
-// $increase.addEventListener('click', increaseFunction);
-
-// function decreaseFunction() {
-//     number--;
-//     $number.innerHTML = Number(number);
-//     setColor();
-// }
-
-// function resetFunction() {
-//     number = 0;
-//     $number.innerHTML = Number(number);
-//     setColor();
-// }
-
-// function increaseFunction() {
-//     number++;
-//     $number.innerHTML = Number(number);
-//     setColor();
-// }
-
-// console.log(typeof($number));
-// console.log($number);
-
-// function setColor() {
-//     if (number < 0) {
-//         $number.style.color = 'red';
-//     } else if (number > 0) {
-//         $number.style.color = 'green';
-//     } else if (number === 0){
-//         $number.style.color = 'white';
-//     }
-// }
+const keys = Array.from(document.querySelectorAll('.key'));
+keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+window.addEventListener('keydown', playSound);
